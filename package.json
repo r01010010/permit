@@ -1,11 +1,15 @@
 {
   "name": "sceptik",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple yet powerful permission manager for javascript applications.",
+  "about": "Simple yet powerful permission manager for javascript applications.",
+  "keywords": ["permission", "edit", "write", "read", "delete", "perm", "check"],
   "main": "src/index.js",
-  "author": "Paloma Jiménez",
+  "author": "Paloma Jiménez <r01010010@gmail.com>",
   "license": "MIT",
   "private": false,
+  "repository": { "type": "git", "url": "https://github.com/r01010010/sceptik.git" },
+  "bugs": "https://github.com/r01010010/sceptik/issues",
   "dependencies": {
     "lodash": "^4.17.20"
   },
