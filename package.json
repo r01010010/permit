@@ -1,0 +1,31 @@
+{
+  "name": "sceptik",
+  "version": "0.0.1",
+  "description": "Simple yet powerful permission manager for javascript applications.",
+  "main": "src/index.js",
+  "author": "Paloma Jiménez",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
+  "scripts": {
+    "test": "mocha --require babel-core/register ./test/*.js"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.13.0",
+    "eslint-plugin-react": "^7.21.5",
+    "mocha": "^8.2.1",
+    "babel-core": "^6.26.3",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0"
+  },
+  "babel": {
+    "presets": [
+      "stage-3",
+      "latest"
+    ]
+  }
+}
