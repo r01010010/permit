@@ -1,26 +1,69 @@
 #  sceptik
 
-Very simple yet powerful tool for `role` 👩‍💻 and `attribute` 👀 based permission checking.
+Very simple yet powerful tool for `role` 👩‍💻 and `attribute` 👀 based permission checking. Includes support for your own dynamic checkers.
 
 ### Example
 
 ```js
-const emily = getPerms({roles: ['guest']}, 'article')
+import initSceptik from 'sceptik'
 
-if (emily.canCreate) {
-  // ...
+// Define yor own checkers
+const isAuthor = (user, { entity }) => {
+  return user.id === entity.author.id
 }
-```
 
-Another example taste 🍬
+// Create your rule matrix
+// Sceptik uses initials as in unix `cwrdlx`
+export const rules = [
+  { role: 'guest',      target: 'article',    permissions: [['--r---'], ['cwrdlx', isAuthor]]  },
+  { role: 'pro',        target: 'article',    permissions: [['c-r-l-']]                        },
+]
 
-```js
+//
+const { getPerms } = initSceptik({
+  rules
+})
+
+// EXAMPLE 1: 🍪
+
+const emily = getPerms({ roles: ['guest'] }, 'article')
+
+console.log(
+  emily.perms,        // ['r']
+  emily.canEdit,      // false
+  emily.canCreate,    // false
+  emily.canRead,      // true
+  emily.canDelete,    // false
+  emily.canList,      // false
+  emily.canOnlyRead,  // true
+  emily.canExecute,   // false
+  emily.cannotCreate, // true 
+  emily.cannotEdit,   // true
+  emily.cannotRead,   // false
+  emily.cannotDelete, // true
+  emily.cannotList,   // true
+  emily.cannotExecute // true
+)
+
+
+// EXAMPLE 2: 🍬
+
 const user = { roles: ['guest'] }
 const { canCreate } = getPerms(user, 'article')
 
-if (canCreate) {
-  // ...
-}
+console.log(canCreate) // false
+
+
+// EXAMPLE 3 (Dynamic check on entity): 🍫
+
+const user = { id: 1, roles: ['guest'] }
+const article = { author: user }
+
+const { perms } = getPerms(user, 'article', { entity: article })
+
+console.log(perms) // ['c', 'w', 'r', 'd', 'l', 'x']
+
+
 ```
 
 ### Available permissions
@@ -52,70 +95,17 @@ Every permission is identified as in `unix`. The list is extended by some more.
 
 **NOTE:** Role `admin` has always all `cwrdlx`
 
-## Usage
 
-Must provide an array of rules as the permission matrix to initialize the tool.
+## Roadmap
 
-### Initialization.
+- [x] Add `entity` checking (ownsership)
+- [x] Make it extensible (add and interpret checker functions in rule matrix)
+- [ ] Add React Hook `usePerms`
+- [ ] Make permission types extensible (add more than just `cwrdlx`
+- [ ] Add async initialization (permission matrix may come from the backend)
+- [ ] Add async dynamic checking of rules
 
-```js
-import initPerms from 'sceptik'
-
-const rules = [
-  { role: 'guest', target: 'article',         perms: 'r'      },
-  { role: 'pro',   target: 'article',         perms: 'cwrl'   }
-] 
-
-const { getPermsAsActions } = initPerms({
-  rules
-})
-```
-
-For fine graining your entities or model access just add paths as properties. 
-
-Example:
-
-```js
-const rules = [
-  { role: 'guest',   target: 'article.body',         perms: ''   }
-]
-
-// User with a 'guest' role can't even read the body of an article.
-```
-
-
-### Check the permissions.
-
-```js
-const emily = getPerms({roles: ['guest']}, 'article')
-
-console.log(
-  emily.perms,        // ['l']
-  emily.canEdit,      // false
-  emily.canCreate,    // false
-  emily.canEdit,      // false
-  emily.canRead,      // true
-  emily.canDelete,    // false
-  emily.canList,      // false
-  emily.canOnlyRead,  // true
-  emily.canExecute,   // false
-  emily.cannotCreate, // true 
-  emily.cannotEdit,   // true
-  emily.cannotRead,   // false
-  emily.cannotDelete, // true
-  emily.cannotList,   // true
-  emily.cannotExecute // true
-)
-```
-
-## ROADMAP
-
-- Add React Hook `usePerms`
-- Add `entity` checking (ownsership)
-- Make it extensible (add and interpret checker functions in rule matrix)
-- Make permission types extensible (add more than just `cwrdlx`
-- Add async initialization (permission matrix may come from the backend)
-- Add async dynamic checking of rules
+<br>
 
 ### The MIT License (MIT)
 

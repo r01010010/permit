@@ -1,9 +1,9 @@
 {
   "name": "sceptik",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Simple yet powerful permission manager for javascript applications.",
   "about": "Simple yet powerful permission manager for javascript applications.",
-  "keywords": ["permission", "edit", "write", "read", "delete", "perm", "check"],
+  "keywords": ["permission", "permissions", "crud", "edit", "write", "read", "delete", "perm", "check", "checking", "access", "control", "authenticate", "authentication", "identify", "login", "role", "roles", "grant", "acl", "ac", "rbac", "abac"],
   "main": "src/index.js",
   "author": "Paloma Jiménez <r01010010@gmail.com>",
   "license": "MIT",
