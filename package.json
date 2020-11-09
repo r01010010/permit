@@ -1,6 +1,6 @@
 {
   "name": "sceptik",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple yet powerful permission manager for javascript applications.",
   "about": "Simple yet powerful permission manager for javascript applications.",
   "keywords": ["permission", "edit", "write", "read", "delete", "perm", "check"],

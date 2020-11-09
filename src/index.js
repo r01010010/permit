@@ -21,7 +21,7 @@ export default ({ rules }) => {
     rule => roles.includes(rule.role) && rule.target === target
   )
   
-  const getPermsArray = (user, target) => {
+  const getPermsArray = (user, target, entity) => {
     if (user && !user.roles) 
       throw new Error(ERR_MSG_USER_PARAM)
 
@@ -29,19 +29,26 @@ export default ({ rules }) => {
 
     if (roles.includes(ADMIN)) 
       return ALL_PERMS
-    
+   
     return fp.pipe(
-      fp.map(r => r.permissions.split('')),
+      fp.map(r => 
+        r.permissions.reduce((acc, [permstring, checkFn]) => {
+          if ((checkFn && entity && checkFn(user, entity)) || !checkFn) {
+            return [...acc, ...permstring.replace(/-/gi, '').split('')]
+          }
+
+          return acc
+        }, [])),
       fp.flatten,
       fp.uniq
     )(getRules(roles, target))
   }
 
-  const getPerms = (user, target) => {
+  const getPerms = (user, target, entity) => {
     if (user && !user.roles) 
       throw new Error(ERR_MSG_USER_PARAM)
 
-    const perms = getPermsArray(user, target)
+    const perms = getPermsArray(user, target, entity)
 
     const canCreate =  !perms  || perms.includes('c')
     const canEdit =    !perms  || perms.includes('w')
@@ -69,8 +76,8 @@ export default ({ rules }) => {
       cannotDelete: !canDelete,
       cannotList: !canList,
       cannotExecute: !canExecute,
-    };
-  };
+    }
+  }
 
   return {
     getRules,

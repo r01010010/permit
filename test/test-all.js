@@ -8,7 +8,7 @@ const { getPerms } = initPerms({
   rules
 })
 
-describe('Permit', () => {
+describe('Sceptik', () => {
   describe('🤷‍♀️ Guest', () => {
     it('Guest can READ article', () => {
       assert.isTrue(getPerms(guest, 'article').canRead)
@@ -98,6 +98,11 @@ describe('Permit', () => {
 
     it('Throws error if user is not an object in getPermsArray(user)', () => {
       expect(() => getPerms(9, 0)).throw(Error)
+    })
+
+    it('It calls the checkFn if entity provided', () => {
+      const { perms } = getPerms(guest, 'article', { entity: { author: guest } })
+      assert.lengthOf(perms, 6)
     })
   })
 })
